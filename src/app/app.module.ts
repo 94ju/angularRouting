@@ -17,6 +17,7 @@ import { AuthGuard } from './users/auth.guard.service';
 import { AuthService } from './users/auth.service';
 import { CanDeactivateGurd } from './servers/edit-server/can-deactivate-guard.service';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { ServerResolver } from './servers/server/server-resolver.service';
 
 const appRoutes:Routes=[
   {path:'', component:HomeComponent},
@@ -29,7 +30,7 @@ const appRoutes:Routes=[
    component:ServersComponent,
    children:[
     {path:':id/edit', component:EditServerComponent,canDeactivate:[CanDeactivateGurd]},
-    {path:':id',component:ServerComponent}
+    {path:':id',component:ServerComponent,resolve:{server:ServerResolver}}
   ]},
   // {path:'not-found',component:PageNotFoundComponent},
   {path:'not-found',component:ErrorPageComponent,data:{message:'Page not Found'}},
@@ -55,7 +56,7 @@ const appRoutes:Routes=[
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ServersService,AuthService,AuthGuard,CanDeactivateGurd],
+  providers: [ServersService,AuthService,AuthGuard,CanDeactivateGurd,ServerResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
